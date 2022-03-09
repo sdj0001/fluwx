@@ -77,6 +77,7 @@ class FluwxPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
                 result
             )
             call.method == "openBusinessView" -> openBusinessView(call, result)
+            call.method == "getInvoice" -> getInvoice(call, result)
             else -> result.notImplemented()
         }
     }
@@ -158,6 +159,19 @@ class FluwxPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
         request.query = call.argument<String>("query") ?: ""
         request.extInfo = "{\"miniProgramType\": 0}"
         result.success(WXAPiHandler.wxApi?.sendReq(request))
+    }
+
+    private fun getInvoice(call: MethodCall, result: Result) {
+        val req = ChooseCardFromWXCardPackage.Req()
+        req.appId = call.argument<String>("appId")
+        req.locationId = ""
+        req.signType = "SHA1"
+        req.cardSign = call.argument("cardSign")
+        req.timeStamp = call.argument<Long>("timeStamp").toString()
+        req.nonceStr = call.argument("nonceStr")
+        req.cardType = "INVOICE"
+        req.canMultiSelect = "1"
+        result.success(WXAPiHandler.wxApi?.sendReq(req))
     }
 
     private fun signAutoDeduct(call: MethodCall, result: Result) {

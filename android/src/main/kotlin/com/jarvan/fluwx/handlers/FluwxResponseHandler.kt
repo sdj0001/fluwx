@@ -40,7 +40,18 @@ object FluwxResponseHandler {
             is WXOpenBusinessWebview.Resp -> handlerWXOpenBusinessWebviewResponse(response)
             is WXOpenCustomerServiceChat.Resp -> handlerWXOpenCustomerServiceChatResponse(response)
             is WXOpenBusinessView.Resp -> handleWXOpenBusinessView(response)
+            is ChooseCardFromWXCardPackage.Resp -> handleWXChooseCardFromWXCardPackage(response)
         }
+    }
+
+    private fun handleWXChooseCardFromWXCardPackage(response: ChooseCardFromWXCardPackage.Resp) {
+        val result = mapOf(
+            "cardItemList" to response.cardItemList,
+            errStr to response.errStr,
+            type to response.type,
+            errCode to response.errCode)
+
+        FluwxPlugin.callingChannel?.invokeMethod("onChooseCardResponse", result)
     }
 
     private fun handleWXOpenBusinessView(response: WXOpenBusinessView.Resp) {

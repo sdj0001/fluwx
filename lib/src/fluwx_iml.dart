@@ -292,3 +292,12 @@ Future<bool> openWeChatBusinessView({required String businessType, required Stri
 Future<bool> checkSupportOpenBusinessView() async {
   return await _channel.invokeMethod("checkSupportOpenBusinessView");
 }
+
+Future<bool> getInvoice({
+  required String appId,
+  required String cardSign,
+  required String timeStamp,
+  required String nonceStr,
+}) async {
+  return await _channel.invokeMethod("getInvoice", {"appId": appId, "cardSign": cardSign, "timeStamp": timeStamp, "nonceStr": nonceStr});
+}

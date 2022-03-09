@@ -46,6 +46,8 @@ Map<String, _WeChatResponseInvoker> _nameAndResponseMapper = {
       WeChatOpenCustomerServiceChatResponse.fromMap(argument),
   "onOpenBusinessViewResponse": (Map argument) =>
       WeChatOpenBusinessViewResponse.fromMap(argument),
+  "onChooseCardResponse": (Map argument) =>
+      WeChatChooseCardResponse.fromMap(argument),
 };
 
 class BaseWeChatResponse {
@@ -144,6 +146,16 @@ class WeChatOpenBusinessViewResponse extends BaseWeChatResponse {
       : extMsg = map["extMsg"],
         openid = map["openid"],
         businessType = map["businessType"],
+        type = map["type"],
+        super._(map[_errCode], map[_errStr]);
+}
+
+class WeChatChooseCardResponse extends BaseWeChatResponse {
+  final String? cardItemList;
+  final int? type;
+
+  WeChatChooseCardResponse.fromMap(Map map)
+      : cardItemList = map["cardItemList"],
         type = map["type"],
         super._(map[_errCode], map[_errStr]);
 }
