@@ -9,6 +9,7 @@
 
 @implementation FluwxResponseHandler
 
+const NSString *cardItemList = @"cardItemList";
 const NSString *errStr = @"errStr";
 const NSString *errCode = @"errCode";
 const NSString *openId = @"openId";
@@ -98,13 +99,20 @@ FlutterMethodChannel *fluwxMethodChannel = nil;
             [_delegate managerDidRecvChooseInvoiceResponse:chooseInvoiceResp];
         }
         WXChooseInvoiceResp *invoicResp = (WXChooseInvoiceResp *) resp;
+        NSString *cardList = @"";
+        if (invoicResp.cardAry != nil) {
+            NSMutableArray *tempArr = [[NSMutableArray alloc] init];
+            for (int i = 0; i < invoicResp.cardAry.count; i++) {
+                WXInvoiceItem *item = [invoicResp.cardAry objectAtIndex:i];
+                [tempArr addObject:[NSString stringWithFormat:@"{\"card_id\":\"%@\",\"encrypt_code\":\"%@\"}", item.cardId, item.encryptCode]];
+            }
+            cardList = [NSString stringWithFormat:@"[%@]", [tempArr componentsJoinedByString:@","]];
+        }
         NSDictionary *result = @{
-                cardItemList: invoicResp.cardItemList == nil ? @"" : invoicResp.cardItemList,
+                cardItemList: cardList,
                 errStr: invoicResp.errStr == nil ? @"" : invoicResp.errStr,
                 errCode: @(invoicResp.errCode),
                 type: @(invoicResp.type),
-                @"code": [FluwxStringUtil nilToEmpty:invoicResp.code],
-                @"state": [FluwxStringUtil nilToEmpty:invoicResp.state]
         };
         [fluwxMethodChannel invokeMethod:@"onChooseCardResponse" arguments:result];
     } else if ([resp isKindOfClass:[WXSubscribeMsgResp class]]) {

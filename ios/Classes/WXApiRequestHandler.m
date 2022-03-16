@@ -377,9 +377,9 @@
     chooseInvoiceReq.cardSign = cardSign;
     chooseInvoiceReq.nonceStr = nonceStr;
     chooseInvoiceReq.signType = signType;
-    chooseCardReq.cardType = @"INVOICE";
+//    chooseCardReq.cardType = @"INVOICE";
     chooseInvoiceReq.timeStamp = timestamp;
-    chooseCardReq.canMultiSelect = 1;
+//    chooseCardReq.canMultiSelect = 1;
     [WXApi sendReq:chooseInvoiceReq completion:completion];
 }
 

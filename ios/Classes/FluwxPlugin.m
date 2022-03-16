@@ -91,7 +91,7 @@ FlutterMethodChannel *channel = nil;
         [self openWeChatCustomerServiceChat:call result:result];
     } else if ([@"checkSupportOpenBusinessView" isEqualToString:call.method]) {
         [self checkSupportOpenBusinessView:call result:result];
-    } } else if ([@"getInvoice" isEqualToString:call.method]) {
+    } else if ([@"getInvoice" isEqualToString:call.method]) {
         [self getInvoice:call result:result];
     } else {
         result(FlutterMethodNotImplemented);
@@ -154,15 +154,9 @@ FlutterMethodChannel *channel = nil;
     NSString *cardSign = call.arguments[@"cardSign"];
     NSString *timeStamp = call.arguments[@"timeStamp"];
     NSString *nonceStr = call.arguments[@"nonceStr"];
-    [WXApiRequestHandler chooseInvoice:call.arguments[@"appId"]
-                           cardSign:cardSign
-                            nonceStr:nonceStr
-                            signType:signType
-                           timestamp:[timeStamp intValue]
-                             Package:packageValue
-                                Sign:sign completion:^(BOOL done) {
-                result(@(done));
-            }];
+    [WXApiRequestHandler chooseInvoice:appId cardSign:cardSign nonceStr:nonceStr signType:@"SHA1" timestamp:[timeStamp intValue] completion:^(BOOL done) {
+        result(@(done));
+    }];
 }
 
 - (void)handlePayment:(FlutterMethodCall *)call result:(FlutterResult)result {
