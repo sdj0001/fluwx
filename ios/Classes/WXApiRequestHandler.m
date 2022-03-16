@@ -370,16 +370,16 @@
              cardSign:(NSString *)cardSign
              nonceStr:(NSString *)nonceStr
              signType:(NSString *)signType
-            timestamp:(UInt32)timestamp
+             timestamp:(UInt32)timestamp
            completion:(void (^ __nullable)(BOOL success))completion {
     WXChooseInvoiceReq *chooseInvoiceReq = [[WXChooseInvoiceReq alloc] init];
     chooseInvoiceReq.appID = appid;
     chooseInvoiceReq.cardSign = cardSign;
     chooseInvoiceReq.nonceStr = nonceStr;
     chooseInvoiceReq.signType = signType;
-//    chooseCardReq.cardType = @"INVOICE";
+    chooseCardReq.cardType = @"INVOICE";
     chooseInvoiceReq.timeStamp = timestamp;
-//    chooseCardReq.canMultiSelect = 1;
+    chooseCardReq.canMultiSelect = 1;
     [WXApi sendReq:chooseInvoiceReq completion:completion];
 }
 
